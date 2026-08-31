@@ -464,4 +464,3 @@ find / -name "filename" 2>/dev/null
 
 ---
 
-*Written and maintained as part of a personal technical documentation portfolio.*
