@@ -1,6 +1,5 @@
 # Notion Workspace Setup Guide
-**MainByte Labs — Sample Document**
-Version 1.0 | Last Updated: August 2026
+MainByte Labs | Version 1.0 | Last Updated: August 2026
 
 ---
 
