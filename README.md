@@ -13,7 +13,7 @@ SOPs, setup guides, and technical reference docs — built and maintained by Mai
 | [Python Reference Guide](./python_reference_guide.md) | Reference Doc | Quick-reference guide for common Python functions, patterns, and usage |
 | [Customer Onboarding SOP](./Customer_onboarding_sop.md) | SOP | Standard onboarding process for new clients at a service-based business |
 | [Notion Workspace Setup Guide](./Notion_workspace_setup_guide.md) | User Guide | End-user guide for setting up and managing a Notion workspace for small teams |
-
+| [Python Linux→Windows EXE Guide](./python_linux_to_windows_exe_guide.md) | Setup Guide | Step-by-step guide to packaging a Python script as a standalone Windows executable using PyInstaller |
 ---
 
 ## Services
