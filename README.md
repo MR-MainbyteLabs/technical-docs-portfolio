@@ -33,3 +33,5 @@ where critical knowledge lives in one person's head instead of a document.
 | [Notion Workspace Setup Guide](./Notion_workspace_setup_guide.md) | User Guide | End-user guide for setting up and managing a Notion workspace for small teams |
 | [Python Linux→Windows EXE Guide](./python_linux_to_windows_exe_guide.md) | Setup Guide | Step-by-step guide to packaging a Python script as a standalone Windows executable using PyInstaller |
 ---
+
+*Written and maintained as part of a personal technical documentation portfolio.*
