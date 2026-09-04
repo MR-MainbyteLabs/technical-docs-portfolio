@@ -1,11 +1,8 @@
 
 # Python Script: Linux → Windows EXE Conversion Guide
 
-**Document Type:** Setup Guide
-**Author:** MainByte Labs
-**Platform:** Windows 10/11 + Python 3.11
-**Skill Level:** Beginner-friendly
-**Last Updated:** September 2026
+**Author:** MainByte Labs | **Last Updated:** September 2026
+**Skill Level:** Beginner-friendly | **Platform:** Windows 10/11 + Python 3.11 |
 **Version:** 1.0.0
 
 ---
