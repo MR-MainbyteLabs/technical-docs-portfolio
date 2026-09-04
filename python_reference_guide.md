@@ -751,5 +751,3 @@ def month(i):
 ```
 
 ---
-
-*Written and maintained as part of a personal technical documentation portfolio.*
