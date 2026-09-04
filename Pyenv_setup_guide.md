@@ -332,5 +332,3 @@ pip install -r requirements.txt
 ```
 
 ---
-
-*Written and maintained as part of a personal technical documentation portfolio.*
