@@ -67,19 +67,19 @@ data files to save in the wrong place.
 
 Find this line if it exists:
 
-```
+```python
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ```
 
 Replace it with:
 
-```
+```python
 SCRIPT_DIR = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(os.path.abspath(__file__))
 ```
 
 If your script has no `SCRIPT_DIR` line at all, add this block after your imports:
 
-```
+```python
 import sys
 SCRIPT_DIR = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else os.path.dirname(os.path.abspath(__file__))
 ```
