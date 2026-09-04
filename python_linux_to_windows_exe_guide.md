@@ -6,6 +6,7 @@
 **Platform:** Windows 10/11 + Python 3.11
 **Skill Level:** Beginner-friendly
 **Last Updated:** September 2026
+**Version:** 1.0.0
 
 ---
 
@@ -224,5 +225,4 @@ C:\Users\YOUR_USERNAME\AppData\Local\Programs\Python\Python311\python.exe -m PyI
 
 ---
 
-*Written and maintained as part of a personal technical documentation portfolio.*
-```
+
