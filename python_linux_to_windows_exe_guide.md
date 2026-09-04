@@ -93,10 +93,8 @@ SCRIPT_DIR = os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) el
 ## Step 2 — Transfer Your Script to Windows
 
 Copy your `.py` file to the Windows machine and place it in a clean, dedicated folder:
-
-```
 C:\Projects\YOUR_APP_NAME\
-```
+
 
 Use a USB drive, shared folder, cloud storage, or any file transfer method available
 to you. Keeping the script in its own folder prevents build output from cluttering
@@ -181,10 +179,8 @@ C:\Users\YOUR_USERNAME\AppData\Local\Programs\Python\Python311\python.exe -m PyI
 ## Step 6 — Retrieve Your EXE
 
 PyInstaller places the finished EXE at:
-
-```
 C:\Projects\YOUR_APP_NAME\dist\YOUR_APP_NAME.exe
-```
+
 
 Copy the `.exe` file into its own folder wherever you intend to run or distribute it.
 Config files, data folders, and any output the app generates will appear alongside
