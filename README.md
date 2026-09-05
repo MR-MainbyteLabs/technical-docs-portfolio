@@ -23,7 +23,7 @@ where critical knowledge lives in one person's head instead of a document.
 ---
 
 ## Documents
----
+
 | File | Type | Description |
 |---|---|---|
 | [Linux Network Camera SOP](./Linux_network_camera_sop.md) | SOP | Step-by-step process for setting up and managing network cameras on Linux |
@@ -32,6 +32,8 @@ where critical knowledge lives in one person's head instead of a document.
 | [Customer Onboarding SOP](./Customer_onboarding_sop.md) | SOP | Standard onboarding process for new clients at a service-based business |
 | [Notion Workspace Setup Guide](./Notion_workspace_setup_guide.md) | User Guide | End-user guide for setting up and managing a Notion workspace for small teams |
 | [Python Linux→Windows EXE Guide](./python_linux_to_windows_exe_guide.md) | Setup Guide | Step-by-step guide to packaging a Python script as a standalone Windows executable using PyInstaller |
+| [PyQt5 Camera Dashboard Setup Guide](./PyQT5_Cam_Dashboard_Setup_Guide.md) | Setup & User Guide | Full setup, user, and architecture guide for a multi-camera RTSP dashboard built with Python, OpenCV, and PyQt5 |
+
 ---
 
 *Written and maintained as part of a personal technical documentation portfolio.*
