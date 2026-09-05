@@ -13,6 +13,8 @@
 This guide walks through the full setup and daily use of the PyQt Camera Dashboard — a
 local multi-camera monitoring and recording application built with Python, OpenCV, and PyQt5.
 
+> **Source code:** [github.com/BleedingCodes/pyqt-camera-dashboard](https://github.com/BleedingCodes/pyqt-camera-dashboard)
+
 By the end of this guide you will have:
 
 - The application installed and running
