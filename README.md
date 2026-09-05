@@ -1,8 +1,18 @@
 # MainByte Labs — Technical Documentation Portfolio
 
-Small businesses waste hours every week on processes nobody wrote down.
-MainByte Labs turns that tribal knowledge into clean, usable documentation
-your team can actually follow.
+**Michael Rivera | Founder & Technical Writer**
+Philadelphia, PA · [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) · [GitHub](https://github.com/MR-MainbyteLabs)
+
+IPC-certified Electronics Test Technician III at L3Harris Technologies by day —
+technical writer and Python automation developer through MainByte Labs.
+
+My background is hands-on: Navy IC Electrician, PCB assembly and repair across
+three manufacturing roles, IPC-certified in J-STD-001, IPC-A-610, and IPC/WHMA-A-620.
+That experience shapes how I write — documentation here is built to be followed in
+the real world, not just read.
+
+MainByte Labs focuses on small businesses, developers, and technical teams who need
+documentation that actually works.
 
 ---
 
