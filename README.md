@@ -43,6 +43,7 @@ where critical knowledge lives in one person's head instead of a document.
 | [Notion Workspace Setup Guide](./Notion_workspace_setup_guide.md) | User Guide | End-user guide for setting up and managing a Notion workspace for small teams |
 | [Python Linux→Windows EXE Guide](./python_linux_to_windows_exe_guide.md) | Setup Guide | Step-by-step guide to packaging a Python script as a standalone Windows executable using PyInstaller |
 | [PyQt5 Camera Dashboard Setup Guide](./PyQT5_Cam_Dashboard_Setup_Guide.md) | Setup & User Guide | Full setup, user, and architecture guide for a multi-camera RTSP dashboard built with Python, OpenCV, and PyQt5 |
+| [EvoForge Version History Case Study](./case-studies/evoforge-version-history.md) | Case Study | Documents what changed and why across three AI-iterated versions of a Python artificial-life simulator |
 
 ---
 
