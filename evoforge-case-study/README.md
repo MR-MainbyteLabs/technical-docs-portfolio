@@ -1,7 +1,7 @@
 # EvoForge Case Study
 
 A documentation work sample: tracking and explaining what changed across
-three AI-assisted iterations of a real Python codebase ([EvoForge]([https://github.com/MR-MainbyteLabs](https://github.com/BleedingCodes/evoforge)), 
+three AI-assisted iterations of a real Python codebase ([EvoForge](https://github.com/BleedingCodes/evoforge), 
 an artificial-life simulator), based on a direct diff of the source rather
 than a changelog the AI wrote about itself.
 
