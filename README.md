@@ -47,7 +47,7 @@ All documents below are portfolio samples demonstrating active MainbyteLabs serv
 | [EvoForge Version History Case Study](./evoforge-case-study) | Case Study | Documents what changed and why across three AI-iterated versions of a Python artificial-life simulator |
 | [Complaint Letter Sample](./Complaint_Letter_Sample.md) | Sample Letter | Fictional consumer refund dispute citing FTC and state consumer protection law — demonstrates the $35 Complaint Letter service |
 | [README Before/After Sample](./README_BeforeAfter_Sample.md) | Before/After Sample | Rewrites a realistic weak README into a structured, scannable version with install steps, usage examples, and a Mermaid diagram — demonstrates the $50 README Documentation service |
-| [HVAC SOP Sample](./HVAC_SOP_Sample.md) | SOP Sample | Three-document SOP set for a fictional residential HVAC company — customer call script, technician daily report, and complaint handling procedure — demonstrates the trades SOP & Operations service |
+| [HVAC SOP Sample](./HVAC_SOP_Sample.md) | SOP Sample | Three-document SOP set for a fictional residential HVAC company — customer call script, technician daily report, and complaint handling procedure |
 
 ---
 
