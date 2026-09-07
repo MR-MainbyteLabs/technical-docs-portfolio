@@ -46,7 +46,7 @@ MIT
 
 ```
 
-**What's actually wrong with this:\*\* it reads like a finished project — full sentences, a Requirements section, an install step. That's exactly why it underperforms: nothing here is scannable. A developer has to *read* the paragraph to learn what it does instead of catching it in three seconds. There's no command syntax anywhere, so "run main.py and follow the prompts" tells you nothing about what to actually type. The install step is incomplete (which Python version? what's in requirements.txt?). The feature list is five one\-word fragments with no explanation. And there's no visual of how the tool works — just prose. This is the profile of 80% of real underperforming READMEs: not empty, just badly organized and impossible to skim.
+**What's actually wrong with this:** it reads like a finished project — full sentences, a Requirements section, an install step. That's exactly why it underperforms: nothing here is scannable. A developer has to *read* the paragraph to learn what it does instead of catching it in three seconds. There's no command syntax anywhere, so "run main.py and follow the prompts" tells you nothing about what to actually type. The install step is incomplete (which Python version? what's in requirements.txt?). The feature list is five one\-word fragments with no explanation. And there's no visual of how the tool works — just prose. This is the profile of 80% of real underperforming READMEs: not empty, just badly organized and impossible to skim.
 
 ## AFTER {#after}
 
