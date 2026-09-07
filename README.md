@@ -6,13 +6,13 @@
 
 Need documentation your team will actually use? Here's what MainbyteLabs delivers:
 
-| Service | What you get | Price | Turnaround |
-|---|---|---|---|
-| README Documentation | Structured, scannable README with usage examples and diagrams | $50 | 24 hrs |
-| Complaint Letter | Legally-cited consumer dispute letter | $35 | 24 hrs |
-| Negotiation Brief | Research-backed brief for salary, contract, or vendor negotiation | $97 | 48 hrs |
-| SOPs & Process Docs | End-to-end process documentation for internal teams | $150+ | Scoped |
-| Technical Setup Guides | Installation and configuration guides for tools and software | $150+ | Scoped |
+| Service | What you get | Price | Turnaround | Order |
+|---|---|---|---|---|
+| README Documentation | Structured, scannable README with usage examples and diagrams | $50 | 24 hrs | [Start here](https://tally.so/r/446j85) |
+| Complaint Letter | Legally-cited consumer dispute letter | $35 | 24 hrs | [Start here](https://tally.so/r/Pdx05x) |
+| Negotiation Brief | Research-backed brief for salary, contract, or vendor negotiation | $97 | 48 hrs | [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) |
+| SOPs & Process Docs | End-to-end process documentation for internal teams | $150+ | Scoped | [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) |
+| Technical Setup Guides | Installation and configuration guides for tools and software | $150+ | Scoped | [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) |
 
 📩 **Ready to start?** → [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) or email mr.mainbytelabs@gmail.com
 
