@@ -4,7 +4,7 @@ Fictional company built as a portfolio sample for the SOP & Operations Documenta
 
 * * *
 
-## Document 1: Customer Call Script — Incoming Service Requests {#doc-1-customer-call-script}
+Customer Call Script — Incoming Service Requests
 
 **Purpose:** Standardize how dispatch handles incoming calls so every customer gets a consistent, professional experience and dispatch captures everything a technician needs before arriving on\-site.
 
