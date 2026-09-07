@@ -1,5 +1,8 @@
 "Fictional example created to demonstrate service quality — names, company, and case details are not real."
 
+
+## Consumer Refund Dispute
+
 Jordan Ellis
 482 Maple Ridge Lane
 Columbus, OH 43215
