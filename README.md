@@ -1,4 +1,4 @@
-# MainByte Labs — Technical Documentation Portfolio  [LinkedIn Company Page](https://www.linkedin.com/company/mainbytelabs)
+# MainByteLabs — Technical Documentation Portfolio 
 
 
 **Michael Rivera | Founder & Technical Writer**
