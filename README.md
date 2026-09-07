@@ -1,4 +1,4 @@
-# MainByteLabs — Technical Documentation Portfolio 
+# MainbyteLabs — Technical Documentation Portfolio 
 
 
 **Michael Rivera | Founder & Technical Writer**
