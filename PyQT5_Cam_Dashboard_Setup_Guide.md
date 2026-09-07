@@ -354,4 +354,3 @@ python camera_dashboard.py
 
 ---
 
-*Written and maintained as part of a personal technical documentation portfolio.*
