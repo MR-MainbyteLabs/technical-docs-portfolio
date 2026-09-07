@@ -1,4 +1,4 @@
-## SOP Sample Set — Summit Comfort Heating & Air {#sop-sample-set-summit-comfort-heating-air}
+## SOP Sample Set — Summit Comfort Heating & Air
 
 Fictional company built as a portfolio sample for the SOP & Operations Documentation service ($97–$175). Three documents: customer call script, technician daily report template, and complaint handling procedure.
 
