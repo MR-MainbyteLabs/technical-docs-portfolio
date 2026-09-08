@@ -1,4 +1,10 @@
-*Fictional case built as a portfolio sample for the Plain Language Translation service ($300–$500/doc, 48\-hour turnaround). Company, patient, and figures are illustrative and not real.*
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Plain Language Translation
+Scenario: Emergency medical bill and insurance EOB rewritten in plain language for a patient disputing charges.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
 "not legal, medical, or insurance advice"
 
 # Plain Language Translation: Emergency Care Balance\-Billing Clause
