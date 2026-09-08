@@ -23,7 +23,7 @@ Need documentation your team will actually use? Here's what MainbyteLabs deliver
 |---|---|---|---|---|
 | README Documentation | Structured, scannable README with usage examples and diagrams | $50 | 24 hrs | [Start here](https://buy.stripe.com/eVq8wO2Z1bpQ38seRO2VG01) |
 | Complaint Letter | Legally-cited consumer dispute letter | $35 | 24 hrs | [Start here](https://buy.stripe.com/28EeVc6bd79A7oIgZW2VG00) |
-| Negotiation Brief | Research-backed brief for salary, contract, or vendor negotiation | $97 | 48 hrs | [Start here](https://buy.stripe.com/9B67sKartgKa38s9xu2VG02) |
+| Negotiation Brief | Research-backed brief for salary, contract, or vendor negotiation | $97 | 24 hrs | [Start here](https://buy.stripe.com/9B67sKartgKa38s9xu2VG02) |
 | SOPs & Process Docs | End-to-end process documentation for internal teams | $150+ | Scoped | [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) |
 | Technical Setup Guides | Installation and configuration guides for tools and software | $150+ | Scoped | [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) |
 
