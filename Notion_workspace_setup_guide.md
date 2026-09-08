@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Setup Guides & User Documentation
+Scenario: Step-by-step setup guide for building a structured Notion workspace.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 # Notion Workspace Setup Guide
 MainByte Labs | Version 1.0 | Last Updated: August 2026
 
