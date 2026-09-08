@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Technical Documentation
+Scenario: Guide for packaging a Python script built on Linux into a Windows executable.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 
 # Python Script: Linux → Windows EXE Conversion Guide
 
