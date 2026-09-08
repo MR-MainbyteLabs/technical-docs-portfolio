@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: SOP & Operations Documentation
+Scenario: Standard operating procedure written for an HVAC technician workflow.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 ## SOP Sample Set — Summit Comfort Heating & Air
 
 Fictional company built as a portfolio sample for the SOP & Operations Documentation service ($97–$175). Three documents: customer call script, technician daily report template, and complaint handling procedure.
