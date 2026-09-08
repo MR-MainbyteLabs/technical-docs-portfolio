@@ -1,3 +1,11 @@
+
+---
+**MainbyteLabs Portfolio Sample**
+Service: Technical Documentation / Setup Guide
+Scenario: Full documentation sprint for EvoForge — setup guide, user docs, and technical reference.
+Disclaimer: Client project. Published with permission. Identifying details may be omitted.
+---
+
 # Case Study: Documenting an AI\-Iterated Codebase — EvoForge
 
 **What this is:** a worked example of tracking and explaining changes across
