@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: SOP & Operations Documentation
+Scenario: Standard operating procedure for onboarding new customers into a service workflow.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 # Customer Onboarding SOP
 MainByte Labs | Version 1.0 | Last Updated: August 2026
 
