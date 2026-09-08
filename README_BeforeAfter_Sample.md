@@ -1,3 +1,10 @@
+---
+**MainbyteLabs Portfolio Sample**
+Service: GitHub README Documentation
+Scenario: Before/after rewrite of a bare-minimum README into a clear, professional project page.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 ## README Transformation Sample
 
 This is a representative before/after example showing the MainbyteLabs documentation standard applied to a typical weak open\-source README. Used as a portfolio sample for the $50 README Documentation service.
