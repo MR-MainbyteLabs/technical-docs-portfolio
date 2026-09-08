@@ -1,5 +1,9 @@
-"Fictional example created to demonstrate service quality — names, company, and case details are not real."
-
+---
+**MainbyteLabs Portfolio Sample**
+Service: Complaint Letter as a Service
+Scenario: Consumer dispute letter written to escalate an unresolved service complaint.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
 
 ## Consumer Refund Dispute
 
