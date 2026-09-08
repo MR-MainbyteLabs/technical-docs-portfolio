@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: SOP & Operations Documentation
+Scenario: SOP for setting up and configuring a network camera on a Linux system.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 # Linux Headless Camera System — Network Setup & Remote Access Guide
 
 **Document Type:** Technical Setup Guide  
