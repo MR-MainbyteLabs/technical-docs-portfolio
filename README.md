@@ -48,6 +48,8 @@ All documents below are portfolio samples demonstrating active MainbyteLabs serv
 | [Complaint Letter Sample](./Complaint_Letter_Sample.md) | Sample Letter | Fictional consumer refund dispute citing FTC and state consumer protection law — demonstrates the $35 Complaint Letter service |
 | [README Before/After Sample](./README_BeforeAfter_Sample.md) | Before/After Sample | Rewrites a realistic weak README into a structured, scannable version with install steps, usage examples, and a Mermaid diagram — demonstrates the $50 README Documentation service |
 | [HVAC SOP Sample](./HVAC_SOP_Sample.md) | SOP Sample | Three-document SOP set for a fictional residential HVAC company — customer call script, technician daily report, and complaint handling procedure |
+| [Negotiation Brief Sample](./Negotiation_Brief_Sample.md) | Sample Brief | Fictional severance package negotiation citing tenure and record — demonstrates the $97 Negotiation Brief service |
+| [Plain Language Translation Sample](./Plain_Language_Translation_Sample.md) | Sample Translation | Rewrites a dense insurance balance-billing clause into plain language — demonstrates the $300–500 Plain Language Translation service |
 
 ---
 
