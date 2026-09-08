@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Technical Documentation
+Scenario: Quick-reference guide covering core Python concepts and common usage patterns.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 # Python Reference Guide
 
 **Document Type:** Developer Reference  
