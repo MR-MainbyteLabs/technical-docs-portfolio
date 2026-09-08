@@ -1,3 +1,12 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Setup Guides & User Documentation
+Scenario: Setup and user guide for a PyQt5-based camera dashboard application.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
+
 # PyQt Camera Dashboard — Setup & User Guide
 
 **Document Type:** Technical Setup & User Guide
