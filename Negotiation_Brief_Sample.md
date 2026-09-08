@@ -1,4 +1,12 @@
-*Fictional case built as a portfolio sample for the Negotiation Brief service ($97, 24\-hour turnaround). Names, employer, and figures are illustrative and not real. This brief covers negotiation strategy only — it is not legal advice, and the release itself should still be reviewed by an employment attorney before signing.*
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Negotiation Brief
+Scenario: Severance negotiation brief prepared for a departing employee seeking a higher exit package.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
+This brief covers negotiation strategy only — it is not legal advice, and the release itself should still be reviewed by an employment attorney before signing.*
 
 # Negotiation Brief: Severance Package Negotiation
 
