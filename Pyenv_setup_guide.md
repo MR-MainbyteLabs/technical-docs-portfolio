@@ -1,3 +1,11 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: Technical Documentation
+Scenario: Developer setup guide for installing and managing Python versions with pyenv.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
 # Pyenv Setup Guide — Python Version Management on Linux
 
 **Document Type:** Technical Setup Guide  
