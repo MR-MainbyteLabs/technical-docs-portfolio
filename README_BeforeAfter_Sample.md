@@ -1,6 +1,6 @@
  
 ---
-**MainbyteLabs Portfolio Sample
+MainbyteLabs Portfolio Sample
 Service: GitHub README Documentation
 Scenario: Before/after rewrite of a bare-minimum README into a clear, professional project page.
 Disclaimer: Sample only. All names, figures, and details are fictional.
