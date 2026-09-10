@@ -4,13 +4,7 @@
 **Michael Rivera | Founder & Technical Writer**
 Philadelphia, PA · [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) · [GitHub](https://github.com/MR-MainbyteLabs)
 
-IPC-certified Electronics Test Technician III at L3Harris Technologies by day —
-technical writer and Python automation developer through MainByte Labs.
-
-My background is hands-on: Navy IC Electrician, PCB assembly and repair across
-three manufacturing roles, IPC-certified in J-STD-001, IPC-A-610, and IPC/WHMA-A-620.
-That experience shapes how I write — documentation here is built to be followed in
-the real world, not just read.
+MainbyteLabs writes documentation your team will actually use — SOPs, setup guides, and technical references built and maintained for developers and small teams.
 
 If it has to work in the field, I can document it.
 ---
@@ -29,6 +23,8 @@ Need documentation your team will actually use? Here's what MainbyteLabs deliver
 | Plain Language Translation | Rewrites dense legal, insurance, or financial documents into plain language | $300–500, scoped | 48 hrs | [Request a quote](mailto:mr.mainbytelabs@gmail.com?subject=Plain%20Language%20Translation%20Quote) |
 
 📩 **Ready to start?** → [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) or email mr.mainbytelabs@gmail.com
+
+Background: IPC-certified Electronics Test Technician III (Navy IC Electrician, PCB assembly/repair, J-STD-001, IPC-A-610, IPC/WHMA-A-620) — that hands-on standard is why documentation here is built to be followed, not just read.
 
 ---
 
