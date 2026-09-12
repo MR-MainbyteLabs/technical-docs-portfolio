@@ -1,14 +1,14 @@
 # SFTP Transfer Verification Guide for Linux Lab Environments
 
 **Author:** Michael Rivera | MainbyteLabs
-**Version:** 1.0
-**Last Updated:** 2024
+**Version:** 1.1
+**Last Updated:** 2026
 
 ---
 
 ## Overview
 
-This guide covers reliable, verifiable SFTP file transfer in Linux lab environments — including manual verification methods, common failure modes, and automated transfer using [`sftp-ultra`](https://github.com/BleedingCodes/sftp-ultra).
+This guide covers reliable, verifiable SFTP file transfer in Linux lab environments — including manual verification methods, common failure modes, and automated transfer using sftp-ultra.
 
 SFTP transfers can silently fail. A file that appears complete may be truncated, corrupted in transit, or partially written due to a dropped connection. In electronics labs, test data, firmware images, and measurement logs require confirmed integrity — not just a successful-looking copy.
 
@@ -29,7 +29,8 @@ This document covers three levels of rigor: basic transfer with manual check, ch
 - SSH access to both source and destination systems (see: SSH Hardening SOP)
 - `openssh-client` installed locally: `ssh -V` should return a version string
 - `sha256sum` available on both systems: standard on all major Linux distributions
-- For automated transfer: Python 3.11+, `sftp-ultra` installed (setup instructions below)
+- `rsync` installed for Method 2 resumable transfers: `rsync --version` should return a version string
+- For automated transfer: Python 3.11+, `paramiko >= 3.4`, and `sftp-ultra` installed (setup instructions below)
 
 ---
 
@@ -97,7 +98,7 @@ put /path/to/file.ext /destination/path/file.ext
 exit
 ```
 
-Or in a single non-interactive command:
+Or in a single non-interactive command (requires bash):
 
 ```bash
 sftp -P 2222 user@destination_ip:/destination/path/ <<< "put /path/to/file.ext"
@@ -204,7 +205,7 @@ After rsync completes, verify with SHA-256 before renaming from `.part` to final
 
 ## Method 3 — Automated Production Transfer with sftp-ultra
 
-[`sftp-ultra`](https://github.com/BleedingCodes/sftp-ultra) automates everything in Methods 1 and 2: concurrent workers, resumable `.part` downloads, SHA-256 verification, SQLite transfer journal, and exponential backoff on connection failure.
+sftp-ultra automates everything in Methods 1 and 2: concurrent workers, resumable `.part` downloads, SHA-256 verification, SQLite transfer journal, and exponential backoff on connection failure.
 
 Use this when:
 - You transfer files regularly between fixed endpoints
@@ -216,57 +217,77 @@ Use this when:
 ```bash
 git clone https://github.com/BleedingCodes/sftp-ultra.git
 cd sftp-ultra
-pip install -r requirements.txt
+pip install -e .
 ```
+
+Requires Python 3.11+ and `paramiko >= 3.4`.
 
 ### Basic Usage
 
-Transfer a single file with verification:
+Transfer files matching a pattern with SHA-256 verification:
 
 ```bash
-python sftp_ultra.py \
-  --host destination_ip \
-  --port 2222 \
-  --user your_username \
-  --key ~/.ssh/id_ed25519 \
-  --remote /source/path/file.bin \
-  --local /destination/path/
+sftp-ultra pull \
+  --target destination_ip \
+  --username your_username \
+  --remote-root /remote/source/path \
+  --destination /local/destination/path \
+  --pattern "*.bin" \
+  --resume \
+  --checksum sha256
 ```
 
 sftp-ultra will:
-1. Download to `/destination/path/file.bin.part`
-2. Verify SHA-256 against the remote file hash
-3. Rename to `/destination/path/file.bin` only if verification passes
-4. Log the transfer result to its SQLite journal
+1. Download each file to `/local/destination/path/filename.bin.part`
+2. Verify SHA-256 between remote and local after transfer
+3. Rename to the final filename only if verification passes
+4. Log the result to its SQLite transfer journal
+
+### Transfer a Full Directory
+
+```bash
+sftp-ultra pull \
+  --target destination_ip \
+  --username your_username \
+  --remote-root /remote/source \
+  --destination /local/destination \
+  --directory recordings \
+  --workers 4
+```
 
 ### Dry Run
 
-Test what would transfer without moving any files:
+Plan a transfer and see what would move without touching any files:
 
 ```bash
-python sftp_ultra.py \
-  --host destination_ip \
-  --port 2222 \
-  --user your_username \
-  --key ~/.ssh/id_ed25519 \
-  --remote /source/path/ \
-  --local /destination/path/ \
+sftp-ultra pull \
+  --target destination_ip \
+  --username your_username \
+  --remote-root /remote/source/path \
+  --destination /local/destination/path \
+  --pattern "*.bin" \
   --dry-run
 ```
 
 ### Querying the Transfer Journal
 
-sftp-ultra logs every transfer to a local SQLite database. Query it to audit transfer history:
+sftp-ultra logs every transfer to a SQLite database at `.sftp-ultra.sqlite3` in the working directory (configurable with `--journal`).
 
 ```bash
-sqlite3 sftp_journal.db "SELECT filename, sha256, status, timestamp FROM transfers ORDER BY timestamp DESC LIMIT 20;"
+sqlite3 .sftp-ultra.sqlite3 "SELECT remote_path, status, checksum FROM transfer_journal ORDER BY updated_at DESC LIMIT 20;"
 ```
 
 Columns:
-- `filename` — transferred file
-- `sha256` — hash verified at transfer time
-- `status` — `VERIFIED`, `FAILED`, or `PARTIAL`
-- `timestamp` — UTC timestamp of transfer completion
+- `remote_path` — full remote path of the transferred file
+- `status` — `copied`, `moved`, `skipped`, `failed`, or `planned`
+- `checksum` — SHA-256 hex digest (only populated when `--checksum sha256` is used)
+- `updated_at` — timestamp of last status update
+
+To surface failures only:
+
+```bash
+sqlite3 .sftp-ultra.sqlite3 "SELECT remote_path, message FROM transfer_journal WHERE status = 'failed' ORDER BY updated_at DESC;"
+```
 
 ---
 
@@ -303,14 +324,3 @@ Use this as a pre/post transfer checklist for critical files (test data, firmwar
 | Permission denied on destination write | Wrong directory permissions | `chmod 755 /destination/path` or check ownership |
 
 ---
-
-## Related Documentation
-
-- [SSH Hardening SOP for Linux Lab Environments](./ssh-hardening-sop.md) — required reading before setting up SFTP between lab nodes
-- [`sftp-ultra`](https://github.com/BleedingCodes/sftp-ultra) — automated SFTP with built-in verification and journaling
-- [`security-scanner`](https://github.com/BleedingCodes/security-scanner) — scan files for exposed credentials before transferring off-machine
-
----
-
-*Built by MainbyteLabs — technical documentation and Python tooling for electronics labs and hardware teams.*
-*https://github.com/MR-MainbyteLabs*
