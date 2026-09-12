@@ -47,7 +47,7 @@ All documents below are portfolio samples demonstrating active MainbyteLabs serv
 | [HVAC SOP Sample](./HVAC_SOP_Sample.md) | SOP Sample | Three-document SOP set for a fictional residential HVAC company — customer call script, technician daily report, and complaint handling procedure |
 | [Negotiation Brief Sample](./Negotiation_Brief_Sample.md) | Sample Brief | Fictional severance package negotiation citing tenure and record — demonstrates the $97 Negotiation Brief service |
 | [Plain Language Translation Sample](./Plain_Language_Translation_Sample.md) | Sample Translation | Rewrites a dense insurance balance-billing clause into plain language — demonstrates the $300–500 Plain Language Translation service |
-| [SSH Hardening SOP for Linux Lab Environments](./ssh-hardening-sop.md) | SOP Sample | overs SSH hardening for Linux systems in electronics lab and hardware team environments |
+| [SSH Hardening SOP for Linux Lab Environments](./ssh-hardening-sop.md) | Setup & User Guide | overs SSH hardening for Linux systems in electronics lab and hardware team environments |
 | [SFTP Transfer Verification Guide for Linux Lab Environments](./sftp-transfer-verification-guide.md) | Setup & User Guide | overs reliable, verifiable SFTP file transfer in Linux lab environments — including manual verification methods, common failure modes, and automated transfer using [sftp-ultra](https://github.com/BleedingCodes/sftp-ultra) |
 
 ---
