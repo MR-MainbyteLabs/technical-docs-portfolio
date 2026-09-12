@@ -1,4 +1,3 @@
- 
 ---
 **MainbyteLabs Portfolio Sample**
 Service: SOP & Operations Documentation
@@ -8,9 +7,9 @@ Disclaimer: Sample only. All names, figures, and details are fictional.
 
 # Linux Headless Camera System — Network Setup & Remote Access Guide
 
-**Document Type:** Technical Setup Guide  
-**Platform:** Linux (Ubuntu/Debian-based)  
-**Skill Level:** Beginner to Intermediate  
+**Document Type:** Technical Setup Guide
+**Platform:** Linux (Ubuntu/Debian-based)
+**Skill Level:** Beginner to Intermediate
 **Last Updated:** 2026
 
 ---
@@ -39,8 +38,8 @@ By the end of this guide the system will:
 
 | Component | Role |
 |---|---|
-| Target (Side-Station) | Headless machine running the camera system |
-| Host (Fight) | Main workstation used for remote access |
+| Target | Headless machine running the camera system |
+| Host | Main workstation used for remote access |
 | VNC Port 5900 | Maintenance desktop — manual admin access |
 | VNC Port 5901 | Camera desktop — automatic connection from host |
 | SSH | Terminal access and file transfer |
@@ -51,9 +50,58 @@ By the end of this guide the system will:
 
 ### Set a Static IP Address
 
-Assigning a static IP ensures the target machine is always reachable at the same address, even after a reboot.
+Assigning a static IP ensures the target machine is always reachable at the same
+address, even after a reboot.
 
-Set the target's IP within your local network range (this guide uses `192.168.1.0/24`).
+This guide uses `192.168.1.105` as the target IP. Adjust to fit your network range.
+
+**Check your current network interface name:**
+
+```bash
+ip -br addr
+```
+
+The interface name is typically `eth0` or `enp3s0`. Note yours before proceeding.
+
+**Edit the Netplan configuration:**
+
+```bash
+sudo nano /etc/netplan/01-netcfg.yaml
+```
+
+**Paste the following, replacing `eth0` with your interface name:**
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.105/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+```
+
+> Replace `192.168.1.105` with your chosen static IP.
+> Replace `192.168.1.1` with your router's IP address.
+> Replace `eth0` with your actual interface name from `ip -br addr`.
+
+**Apply the configuration:**
+
+```bash
+sudo netplan apply
+```
+
+**Verify the static IP is set:**
+
+```bash
+ip -br addr
+```
 
 ### Scan the Network
 
@@ -99,10 +147,11 @@ sudo ufw allow from 192.168.1.X
 ### Connect From the Host
 
 ```bash
-ssh USERNAME@192.168.1.X
+ssh USERNAME@192.168.1.105
 ```
 
-> When prompted, type `yes` to accept and store the SSH key. You will only be asked once per machine.
+> When prompted, type `yes` to accept and store the SSH key. You will only be asked
+> once per machine.
 
 ---
 
@@ -121,7 +170,8 @@ Having two desktops keeps the camera feed isolated from admin activity.
 
 ### 3A — Install Xfce Desktop Environment
 
-The headless target needs a lightweight desktop environment. Xfce is used here for its low resource usage.
+The headless target needs a lightweight desktop environment. Xfce is used here for
+its low resource usage.
 
 ```bash
 sudo apt install xfce4 xfce4-panel xfwm4 xfdesktop4
@@ -135,10 +185,22 @@ sudo apt install xfce4 xfce4-panel xfwm4 xfdesktop4
 
 x11vnc shares the target's existing display (`:0`) over the network.
 
+> **Display manager dependency:** This service uses LightDM as the display manager.
+> If your system uses GDM or SDDM, the `-auth` path will differ. Verify your display
+> manager with: `systemctl status display-manager`
+> For GDM: `-auth /run/user/1000/gdm/Xauthority`
+> For SDDM: `-auth /var/run/sddm/\{your-session-id\}`
+
 **Install x11vnc:**
 
 ```bash
 sudo apt install x11vnc
+```
+
+**Create a VNC password file for the maintenance desktop:**
+
+```bash
+x11vnc -storepasswd /etc/x11vnc.pass
 ```
 
 **Create the systemd service:**
@@ -160,6 +222,7 @@ Type=simple
 ExecStart=/usr/bin/x11vnc \
   -display :0 \
   -auth /var/run/lightdm/root/:0 \
+  -rfbauth /etc/x11vnc.pass \
   -forever \
   -shared \
   -loop \
@@ -204,6 +267,7 @@ vncpasswd
 **Create the desktop startup file:**
 
 ```bash
+mkdir -p ~/.vnc
 nano ~/.vnc/xstartup
 ```
 
@@ -228,7 +292,35 @@ chmod +x ~/.vnc/xstartup
 sudo nano /etc/systemd/system/tigervnc-camera.service
 ```
 
-Paste your project-specific service definition here.
+**Paste the following:**
+
+```ini
+[Unit]
+Description=TigerVNC camera desktop on display :1
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=YOUR_USERNAME
+PAMName=login
+PIDFile=/home/YOUR_USERNAME/.vnc/%H%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :1 > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver :1 \
+  -geometry 1920x1080 \
+  -depth 24 \
+  -rfbport 5901
+ExecStop=/usr/bin/vncserver -kill :1
+
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+> Replace `YOUR_USERNAME` with the actual Linux username running the camera system
+> (the user whose home directory contains `.vnc/`). Run `whoami` on the target to
+> confirm.
 
 **Enable and start the service:**
 
@@ -249,7 +341,8 @@ ss -tlnp | grep 5901
 
 ## Phase 4 — Autostart Camera Dashboard on Boot
 
-The camera dashboard Python script needs to launch automatically when the camera desktop starts.
+The camera dashboard Python script needs to launch automatically when the camera
+desktop starts.
 
 **Create the autostart directory:**
 
@@ -269,12 +362,16 @@ nano ~/.config/autostart/camera-dashboard.desktop
 [Desktop Entry]
 Type=Application
 Name=Camera Dashboard
-Exec=/home/side/Python/venv/bin/python /home/side/Python/Cam_System/camera_dashboard.py
+Exec=/home/YOUR_USERNAME/Python/venv/bin/python /home/YOUR_USERNAME/Python/Cam_System/camera_dashboard.py
 Terminal=false
 Hidden=false
 X-GNOME-Autostart-enabled=true
 X-XFCE-Autostart-enabled=true
 ```
+
+> Replace `YOUR_USERNAME` with your actual Linux username. Run `whoami` on the target
+> to confirm. Replace the Python and script paths with the actual locations on your
+> system. Run `which python` inside your virtual environment to confirm the Python path.
 
 **Verify the dashboard is running:**
 
@@ -286,7 +383,14 @@ ps aux | grep camera_dashboard
 
 ## Phase 5 — Host Auto-Connect to Camera Desktop
 
-The host machine automatically connects to the camera desktop (port 5901) on startup using a user-level systemd service.
+The host machine automatically connects to the camera desktop (port 5901) on startup
+using a user-level systemd service.
+
+**Create the service directory if it doesn't exist:**
+
+```bash
+mkdir -p ~/.config/systemd/user
+```
 
 **Create the service file:**
 
@@ -310,6 +414,8 @@ RestartSec=5
 [Install]
 WantedBy=default.target
 ```
+
+> Replace `192.168.1.105` with the actual static IP of your target machine.
 
 **Enable and start the service:**
 
@@ -347,19 +453,19 @@ scp USERNAME@192.168.1.105:/path/to/file.mp4 .
 **Download a file to a specific location on the host:**
 
 ```bash
-scp USERNAME@192.168.1.105:/path/to/file.mp4 /home/fight/Downloads/
+scp USERNAME@192.168.1.105:/path/to/file.mp4 /home/YOUR_USERNAME/Downloads/
 ```
 
 **Upload a file from host to target:**
 
 ```bash
-scp /home/fight/file.txt USERNAME@192.168.1.105:/home/side/
+scp /home/YOUR_USERNAME/file.txt USERNAME@192.168.1.105:/home/YOUR_USERNAME/
 ```
 
 **Copy an entire directory:**
 
 ```bash
-scp -r USERNAME@192.168.1.105:/home/side/Documents/Project .
+scp -r USERNAME@192.168.1.105:/home/YOUR_USERNAME/Documents/Project .
 ```
 
 ### If You Don't Know the File Path
@@ -373,7 +479,7 @@ find / -name "filename.mp4" 2>/dev/null
 Then copy using the returned path:
 
 ```bash
-scp USERNAME@192.168.1.105:/home/side/path/to/filename.mp4 /home/fight/Downloads/
+scp USERNAME@192.168.1.105:/home/YOUR_USERNAME/path/to/filename.mp4 /home/YOUR_USERNAME/Downloads/
 ```
 
 ### Sending Files From the Target Back to the Host
@@ -381,7 +487,7 @@ scp USERNAME@192.168.1.105:/home/side/path/to/filename.mp4 /home/fight/Downloads
 If you are already SSH'd into the target and want to push a file to the host:
 
 ```bash
-scp /path/to/file.mp4 fight@192.168.1.101:/home/fight/Downloads/
+scp /path/to/file.mp4 YOUR_HOST_USERNAME@192.168.1.101:/home/YOUR_HOST_USERNAME/Downloads/
 ```
 
 ---
@@ -400,7 +506,7 @@ scp /path/to/file.mp4 fight@192.168.1.101:/home/fight/Downloads/
 
 ## System Verification
 
-Run these checks after setup or after a reboot to confirm everything is working correctly.
+Run these checks after setup or after a reboot to confirm everything is working.
 
 **On the target:**
 
@@ -469,6 +575,3 @@ scp USERNAME@192.168.1.105:/path/to/file .
 # Find a file on the target
 find / -name "filename" 2>/dev/null
 ```
-
----
-
