@@ -2,7 +2,7 @@
 
 **Author:** Michael Rivera | MainbyteLabs
 **Version:** 1.0
-**Last Updated:** 2024
+**Last Updated:** 09/13/2026
 
 ---
 
@@ -232,6 +232,7 @@ Open a new terminal on your local machine. Connect using the new port:
 ```bash
 ssh -i ~/.ssh/id_ed25519 -p 2222 your_user@target_ip
 ```
+**Note: Record whatever port you choose. You must use it in every firewall rule, SSH command, and ~/.ssh/config entry going forward. 2222 is used here as an example only.
 
 Verify:
 - You connect successfully
@@ -244,7 +245,15 @@ If the connection fails, use your original session to troubleshoot or restore fr
 
 ---
 
+### Before Step 8
+
+Check which firewall software you are running:
+
+sudo ufw status
+sudo firewall-cmd --state
+
 ### Step 8 — Update Firewall Rules
+
 
 If you are running `ufw`:
 
@@ -309,12 +318,4 @@ Add an entry for every machine you manage. This eliminates typing ports and key 
 
 ---
 
-## Related Tools
 
-- [`sftp-ultra`](https://github.com/BleedingCodes/sftp-ultra) — production SFTP engine with SHA-256 verification and SQLite journal; designed for SSH-based file transfer in lab environments
-- [`security-scanner`](https://github.com/BleedingCodes/security-scanner) — scans local files for exposed credentials before they leave the machine
-
----
-
-*Built by MainbyteLabs — technical documentation and Python tooling for electronics labs and hardware teams.*
-*https://github.com/MR-MainbyteLabs*
