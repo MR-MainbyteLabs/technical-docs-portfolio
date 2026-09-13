@@ -216,7 +216,7 @@ Use this when:
 
 ```bash
 git clone https://github.com/BleedingCodes/sftp-ultra.git
-cd sftp-ultra
+cd sftp-ultra/sftp-ultra
 pip install -e .
 ```
 
