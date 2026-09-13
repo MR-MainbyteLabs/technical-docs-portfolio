@@ -1,7 +1,7 @@
 # SFTP Transfer Verification Guide for Linux Lab Environments
 
 **Author:** Michael Rivera | MainbyteLabs
-**Version:** 1.1
+**Version:** 1.2
 **Last Updated:** 2026
 
 ---
@@ -85,7 +85,7 @@ This creates a sidecar `.sha256` file with the hash and filename. Transfer this 
 
 ### Step 2 — Transfer the File
 
-Using the standard `sftp` command:
+Using the standard `sftp` command interactively:
 
 ```bash
 sftp -P 2222 user@destination_ip
@@ -98,16 +98,24 @@ put /path/to/file.ext /destination/path/file.ext
 exit
 ```
 
-Or in a single non-interactive command (requires bash):
+For non-interactive use, pipe commands via stdin (bash only):
 
 ```bash
-sftp -P 2222 user@destination_ip:/destination/path/ <<< "put /path/to/file.ext"
+echo "put /path/to/file.ext" | sftp -P 2222 user@destination_ip:/destination/path/
 ```
 
-If transferring a `.sha256` sidecar file:
+For multiple files in one session (bash only — `$'...'` syntax is bash-specific):
 
 ```bash
-sftp -P 2222 user@destination_ip:/destination/path/ <<< $'put /path/to/file.ext\nput /path/to/file.ext.sha256'
+printf 'put /path/to/file.ext\nput /path/to/file.ext.sha256\n' | sftp -P 2222 user@destination_ip:/destination/path/
+```
+
+If you are scripting under `/bin/sh` or a non-bash shell, write the commands to a temp file and pass it with `-b`:
+
+```bash
+printf 'put /path/to/file.ext\nput /path/to/file.ext.sha256\n' > /tmp/sftp_batch.txt
+sftp -P 2222 -b /tmp/sftp_batch.txt user@destination_ip:/destination/path/
+rm /tmp/sftp_batch.txt
 ```
 
 ---
@@ -257,7 +265,7 @@ sftp-ultra pull \
 
 ### Dry Run
 
-Plan a transfer and see what would move without touching any files:
+Plan a transfer and see what would move without transferring, modifying, or deleting any files:
 
 ```bash
 sftp-ultra pull \
@@ -268,6 +276,8 @@ sftp-ultra pull \
   --pattern "*.bin" \
   --dry-run
 ```
+
+The journal at `--journal` is written during a dry run with `planned` and `skipped` status entries, so the plan is queryable afterward. No files are transferred, modified, or deleted.
 
 ### Querying the Transfer Journal
 
@@ -322,5 +332,3 @@ Use this as a pre/post transfer checklist for critical files (test data, firmwar
 | `sftp: Couldn't canonicalise: No such file or directory` | Destination path does not exist | Create destination directory before transfer: `ssh user@dest "mkdir -p /path"` |
 | `.part` file left on destination | Interrupted sftp-ultra transfer | Re-run sftp-ultra — it will resume from the `.part` file |
 | Permission denied on destination write | Wrong directory permissions | `chmod 755 /destination/path` or check ownership |
-
----
