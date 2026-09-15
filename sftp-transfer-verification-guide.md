@@ -200,7 +200,7 @@ rsync -avP --partial -e "ssh -p 2222" user@source_ip:/path/to/largefile.bin /des
 ```
 
 Flags:
-- `-a` — archive mode (preserves permissions, timestamps)
+- `-a` — archive mode (recursive, preserves permissions, timestamps, symlinks, and ownership)
 - `-v` — verbose
 - `-P` — show progress + keep partial files on interrupt
 - `--partial` — keep the partial file on destination for resume
@@ -220,6 +220,13 @@ Use this when:
 - You need a log of every transfer with verification status
 - You cannot afford to manually verify every transfer
 
+### Prerequisites for sftp-ultra
+
+Before running sftp-ultra against a host for the first time:
+
+- **Host key:** The target host must be present in your `~/.ssh/known_hosts`. Connect once manually with `ssh user@target` and accept the host key prompt. sftp-ultra rejects unknown hosts by default and will fail with a paramiko key-rejection error if the host is not already known. Alternatively, pass `--trust-unknown-host` to auto-accept — use only on trusted networks.
+- **Authentication:** sftp-ultra uses **password authentication only**. It prompts for a password interactively on every run. SSH key authentication and SSH agent forwarding are not currently supported — there is no `--identity-file` flag, and the password prompt cannot be bypassed even if a default key (`~/.ssh/id_rsa`) is present or an agent is running. For unattended/cron use, supply the password via a secrets manager or a tool like `sshpass` — or connect manually for interactive transfers until key auth is added.
+
 ### Installation
 
 ```bash
@@ -227,6 +234,8 @@ git clone https://github.com/BleedingCodes/sftp-ultra.git
 cd sftp-ultra/sftp-ultra
 pip install -e .
 ```
+
+> **Note:** The repo has a nested directory layout. `pyproject.toml` lives inside the inner `sftp-ultra/` directory, not at the repo root. Running `pip install -e .` from the repo root will succeed silently but will **not** install the `sftp-ultra` command. Run it from `sftp-ultra/sftp-ultra/` as shown above.
 
 Requires Python 3.11+ and `paramiko >= 3.4`.
 
@@ -277,7 +286,7 @@ sftp-ultra pull \
   --dry-run
 ```
 
-The journal at `--journal` is written during a dry run with `planned` and `skipped` status entries, so the plan is queryable afterward. No files are transferred, modified, or deleted.
+The journal at `--journal` is written during a dry run with `planned` and `skipped` status entries, so the plan is queryable afterward. No files are transferred, modified, or deleted on either the local or remote system. The remote host is contacted for file discovery (building the plan), but no data is moved.
 
 ### Querying the Transfer Journal
 
@@ -288,9 +297,13 @@ sqlite3 .sftp-ultra.sqlite3 "SELECT remote_path, status, checksum FROM transfer_
 ```
 
 Columns:
-- `remote_path` — full remote path of the transferred file
+- `remote_path` — full remote path of the transferred file (primary key)
+- `local_path` — local destination path
 - `status` — `copied`, `moved`, `skipped`, `failed`, or `planned`
+- `remote_size` — file size on the remote at transfer time (bytes)
+- `remote_mtime` — file mtime on the remote at transfer time (Unix timestamp)
 - `checksum` — SHA-256 hex digest (only populated when `--checksum sha256` is used)
+- `message` — error message on failure; empty on success
 - `updated_at` — timestamp of last status update
 
 To surface failures only:
