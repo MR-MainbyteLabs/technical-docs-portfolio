@@ -1,4 +1,3 @@
-technical-docs-portfolio/README.md
 
 #MainbyteLabs — Technical Documentation Portfolio
 
