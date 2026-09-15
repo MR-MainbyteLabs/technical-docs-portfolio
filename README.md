@@ -1,6 +1,13 @@
 
 #MainbyteLabs — Technical Documentation Portfolio
-
+---
+![SOPs](https://img.shields.io/badge/Docs-SOPs-blue)
+![Setup Guides](https://img.shields.io/badge/Docs-Setup%20Guides-blue)
+![Case Studies](https://img.shields.io/badge/Docs-Case%20Studies-blue)
+![Markdown](https://img.shields.io/badge/Format-Markdown-lightgrey)
+![IPC-A-610](https://img.shields.io/badge/IPC--A--610-Certified-informational)
+![MIT](https://img.shields.io/badge/License-MIT-brightgreen)
+---
 **Michael Rivera | Founder & Technical Writer**
 Philadelphia, PA · [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) · [GitHub](https://github.com/MR-MainbyteLabs)
 
