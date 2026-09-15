@@ -18,7 +18,9 @@ If it has to work in the field, I can document it.
 | Python Automation Script | Linux, SSH, SFTP automation — production quality | $150–$500 | Scoped | [Order on Upwork](https://www.upwork.com/services/product/development-it-i-will-build-a-python-automation-script-for-your-linux-or-ssh-workflow-2098702187175229057) |
 | Complaint Letter | Legally-cited consumer dispute letter | $35 | 24 hrs | [Start here](https://buy.stripe.com/28EeVc6bd79A7oIgZW2VG00) |
 | Negotiation Brief | Research-backed brief for salary, contract, or vendor negotiation | $97 | 48 hrs | [Start here](https://buy.stripe.com/9B67sKartgKa38s9xu2VG02) |
+| Reddit "Do It For Me" Writing | Blog, topic and content writing | $20–$40 | Same-day | [Request a quote](mailto:mr.mainbytelabs@gmail.com?subject=Reddit+Writing+Quote) |
 | Plain Language Translation | Rewrites dense legal, insurance, or financial documents into plain language | $300–$500 | 48 hrs | [Request a quote](mailto:mr.mainbytelabs@gmail.com?subject=Plain+Language+Translation+Quote) |
+| Custom Python Tooling | Linux environments — SSH-based and non-SSH automation and workflows | $100/hr | Scoped | [Request a quote](mailto:mr.mainbytelabs@gmail.com?subject=Python+Tooling+Quote) |
 
 📩 **Ready to start?** → [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) or email mr.mainbytelabs@gmail.com
 
@@ -47,6 +49,7 @@ All documents below are portfolio samples demonstrating active MainbyteLabs serv
 | [Complaint Letter Sample](./Complaint_Letter_Sample.md) | Sample Letter | Fictional consumer refund dispute citing FTC and state consumer protection law |
 | [Negotiation Brief Sample](./Negotiation_Brief_Sample.md) | Sample Brief | Fictional severance package negotiation citing tenure and record |
 | [Plain Language Translation Sample](./Plain_Language_Translation_Sample.md) | Sample Translation | Dense insurance balance-billing clause rewritten into plain language |
+
 ---
 
 📩 **Hire MainbyteLabs** → [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) or mr.mainbytelabs@gmail.com
