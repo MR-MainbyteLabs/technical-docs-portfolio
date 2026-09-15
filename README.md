@@ -1,4 +1,6 @@
-# MainbyteLabs — Technical Documentation Portfolio
+technical-docs-portfolio/README.md
+
+#MainbyteLabs — Technical Documentation Portfolio
 
 **Michael Rivera | Founder & Technical Writer**
 Philadelphia, PA · [LinkedIn](https://linkedin.com/in/michael-rivera-c0ding) · [GitHub](https://github.com/MR-MainbyteLabs)
