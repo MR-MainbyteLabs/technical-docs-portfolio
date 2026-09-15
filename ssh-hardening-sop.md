@@ -61,6 +61,12 @@ From your local machine:
 ssh-copy-id -i ~/.ssh/id_ed25519.pub your_user@target_ip
 ```
 
+> **Windows users:** `ssh-copy-id` is not available natively. Manually append your public key: copy the full contents of `id_ed25519.pub`, then on the target machine run:
+> ```bash
+> mkdir -p ~/.ssh && echo "paste-your-public-key-here" >> ~/.ssh/authorized_keys
+> chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
+> ```
+
 Verify it works before moving on:
 
 ```bash
@@ -109,7 +115,9 @@ Apply each of the following changes. Find the existing line and edit it, or add 
 Port 2222
 ```
 
-Use any unused port between 1024–65535. `2222` is common for labs. Note whatever you choose — you will need it for every future connection.
+Use any unused port between 1024–65535. `2222` is common for labs.
+
+> **Record your chosen port now.** You must use it in every firewall rule, SSH command, and `~/.ssh/config` entry going forward. `2222` is used throughout this document as an example only — substitute your actual port everywhere it appears.
 
 Why: eliminates the majority of automated brute-force attempts that target port 22.
 
@@ -165,6 +173,8 @@ KerberosAuthentication no
 GSSAPIAuthentication no
 UsePAM yes
 ```
+
+> **Note on `UsePAM yes`:** On Debian and Ubuntu, this is required for account and session modules and does not override `PasswordAuthentication no` in OpenSSH 8.0+. If you are running an older distribution, verify that password auth is actually rejected after restart: `ssh -v your_user@target_ip` — the output should show `Authentications that can continue: publickey` with no `password` listed.
 
 #### 4.9 — Set Secure Ciphers and MACs
 
@@ -232,7 +242,6 @@ Open a new terminal on your local machine. Connect using the new port:
 ```bash
 ssh -i ~/.ssh/id_ed25519 -p 2222 your_user@target_ip
 ```
-**Note: Record whatever port you choose. You must use it in every firewall rule, SSH command, and ~/.ssh/config entry going forward. 2222 is used here as an example only.
 
 Verify:
 - You connect successfully
@@ -245,15 +254,18 @@ If the connection fails, use your original session to troubleshoot or restore fr
 
 ---
 
-### Before Step 8
+### Step 8 — Identify Your Active Firewall
 
-Check which firewall software you are running:
+Run the following commands to determine which firewall manager is active, then continue to Step 9 using the matching block:
 
+```bash
 sudo ufw status
 sudo firewall-cmd --state
+```
 
-### Step 8 — Update Firewall Rules
+---
 
+### Step 9 — Update Firewall Rules
 
 If you are running `ufw`:
 
@@ -273,9 +285,22 @@ sudo firewall-cmd --reload
 
 Verify port 22 is no longer listed and port 2222 is open.
 
+If **neither** `ufw` nor `firewalld` is active on your system:
+
+```bash
+sudo iptables -L -n | grep 22
+```
+
+If port 22 does not appear in any iptables rules, no firewall update is needed — the port change in `sshd_config` is sufficient. To add a firewall going forward:
+
+```bash
+sudo apt install ufw && sudo ufw enable
+sudo ufw allow 2222/tcp
+```
+
 ---
 
-### Step 9 — Update Your Local SSH Config (Recommended)
+### Step 10 — Update Your Local SSH Config (Recommended)
 
 On your local machine, edit `~/.ssh/config` (create it if it doesn't exist):
 
@@ -318,4 +343,5 @@ Add an entry for every machine you manage. This eliminates typing ports and key 
 
 ---
 
-
+**MainbyteLabs Technical Documentation**
+Michael Rivera | mr.mainbytelabs@gmail.com | github.com/MR-MainbyteLabs
