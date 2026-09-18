@@ -1,0 +1,647 @@
+ 
+---
+**MainbyteLabs Portfolio Sample**
+Service: SOP & Operations Documentation
+Scenario: SOP for setting up and configuring a network camera on a Linux system.
+Disclaimer: Sample only. All names, figures, and details are fictional.
+---
+
+# Linux Headless Camera System — Network Setup & Remote Access Guide
+
+**Document Type:** Standard Operating Procedure (SOP)
+**Platform:** Linux (Ubuntu/Debian-based)
+**Skill Level:** Beginner to Intermediate
+**Last Updated:** April 2026
+
+---
+
+## What This Guide Covers
+
+This guide documents the setup of a two-machine Linux system where:
+
+- A **headless target machine** (no monitor) runs a camera dashboard automatically on boot
+- A **host machine** connects remotely to view and control it
+
+Remote access is handled two ways:
+- **SSH** — terminal access for maintenance and file transfer
+- **VNC** — graphical desktop access for viewing the camera feed and managing the system
+
+By the end of this guide the system will:
+
+- Automatically start the camera dashboard on the target after every boot
+- Stream the camera desktop to the host automatically
+- Provide a separate maintenance desktop for admin access
+- Allow secure file transfers between machines
+
+---
+
+## System Overview
+
+| Component | Role |
+|---|---|
+| Target | Headless machine running the camera system |
+| Host | Main workstation used for remote access |
+| VNC Port 5900 | Maintenance desktop — manual admin access |
+| VNC Port 5901 | Camera desktop — automatic connection from host |
+| SSH | Terminal access and file transfer |
+
+---
+
+## Before You Begin — Define Your Variables
+
+Every command in this guide uses three values specific to your environment.
+Identify them now and substitute them wherever they appear.
+
+| Variable | What It Is | How to Find It |
+|---|---|---|
+| `TARGET_IP` | Static IP you will assign to the headless target | Choose one unused on your subnet — this guide uses `192.168.1.105` as an example |
+| `HOST_IP` | Current IP of your host (workstation) machine | Run `ip -br addr` on the host and read the address shown for your active interface |
+| `YOUR_USERNAME` | Linux username on the target machine | Run `whoami` on the target |
+
+> Every occurrence of `192.168.1.105` in this guide represents `TARGET_IP`.
+> Every occurrence of `192.168.1.X` represents `HOST_IP` — replace it with the value from `ip -br addr` on your host.
+> Every occurrence of `YOUR_USERNAME` represents the username from `whoami` on the target.
+
+---
+
+## Phase 1 — Network Setup
+
+### Set a Static IP Address
+
+Assigning a static IP ensures the target machine is always reachable at the same
+address, even after a reboot.
+
+This guide uses `192.168.1.105` as the target IP. Adjust to fit your network range.
+
+**Check your current network interface name:**
+
+```bash
+ip -br addr
+```
+
+The interface name is typically `eth0` or `enp3s0`. Note yours before proceeding.
+
+**Edit the Netplan configuration:**
+
+```bash
+sudo nano /etc/netplan/01-netcfg.yaml
+```
+
+**Paste the following, replacing `eth0` with your interface name:**
+
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.105/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+```
+
+> Replace `192.168.1.105` with your chosen static IP.
+> Replace `192.168.1.1` with your router's IP address.
+> Replace `eth0` with your actual interface name from `ip -br addr`.
+
+**Apply the configuration:**
+
+```bash
+sudo netplan apply
+```
+
+**Verify the static IP is set:**
+
+```bash
+ip -br addr
+```
+
+### Scan the Network
+
+Use these commands to inspect your current network and identify connected devices:
+
+```bash
+ip -br addr          # Show network interfaces and their IP addresses
+ip route             # Show routing table
+ip neigh             # Show ARP table (recently seen devices)
+```
+
+**Install nmap for deeper network scanning:**
+
+```bash
+sudo apt install nmap
+nmap -sn 192.168.1.0/24    # Scan all devices on the subnet
+arp -a                      # Show cached ARP entries
+```
+
+---
+
+## Phase 2 — SSH Setup
+
+SSH provides secure terminal access to the target machine from the host.
+
+### Install and Enable SSH on the Target
+
+```bash
+sudo apt install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
+sudo systemctl status ssh
+```
+
+### Allow SSH Through the Firewall
+
+First, check whether UFW is active on the target:
+
+```bash
+sudo ufw status
+```
+
+> If UFW shows `inactive`, it is not currently enforcing rules. You can enable it with
+> `sudo ufw enable` — but only **after** confirming SSH access works without it, or you
+> risk locking yourself out. If UFW is inactive and you choose not to enable it, skip
+> the allow command below.
+
+Replace `HOST_IP` with your host machine's IP address (from the Variables table above):
+
+```bash
+sudo ufw allow from HOST_IP
+```
+
+### Connect From the Host
+
+```bash
+ssh USERNAME@192.168.1.105
+```
+
+> When prompted, type `yes` to accept and store the SSH key. You will only be asked
+> once per machine.
+
+---
+
+## Phase 3 — VNC Setup (Two-Desktop System)
+
+This system uses two separate VNC services running on the target simultaneously:
+
+| Service | Display | Port | Purpose |
+|---|---|---|---|
+| x11vnc | `:0` | 5900 | Maintenance desktop — always available |
+| TigerVNC | `:1` | 5901 | Camera desktop — auto-started on boot |
+
+Having two desktops keeps the camera feed isolated from admin activity.
+
+---
+
+### 3A — Install Xfce Desktop Environment
+
+The headless target needs a lightweight desktop environment. Xfce is used here for
+its low resource usage.
+
+```bash
+sudo apt install xfce4 xfce4-panel xfwm4 xfdesktop4
+```
+
+> At the login screen, select the **Xfce session** — not the default session.
+
+---
+
+### 3B — x11vnc Service (Maintenance Desktop — Port 5900)
+
+x11vnc shares the target's existing display (`:0`) over the network.
+
+**Step 1 — Confirm your display manager before proceeding:**
+
+```bash
+systemctl status display-manager
+```
+
+The `-auth` path in the service file below depends on which display manager is running.
+Identify yours from the output and use the correct path:
+
+| Display Manager | `-auth` path to use |
+|---|---|
+| LightDM (default — used in this guide) | `/var/run/lightdm/root/:0` |
+| GDM | `/run/user/1000/gdm/Xauthority` |
+| SDDM | `/var/run/sddm/{your-session-id}` |
+
+> If your display manager is GDM or SDDM, replace the `-auth` value in the service
+> file below with the correct path from the table above before saving.
+
+**Install x11vnc:**
+
+```bash
+sudo apt install x11vnc
+```
+
+**Create a VNC password file for the maintenance desktop:**
+
+```bash
+x11vnc -storepasswd /etc/x11vnc.pass
+```
+
+> **Two separate password files:** x11vnc (port 5900) stores its password at
+> `/etc/x11vnc.pass` (system-level, owned by root). TigerVNC (port 5901) uses
+> `~/.vnc/passwd` (user-level, in your home directory). These are independent files
+> with independent passwords. When connecting, use the password that matches the
+> port you are connecting to.
+
+**Create the systemd service:**
+
+```bash
+sudo nano /etc/systemd/system/x11vnc.service
+```
+
+**Paste the following:**
+
+```ini
+[Unit]
+Description=x11vnc server for headless desktop
+After=display-manager.service
+Requires=display-manager.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc \
+  -display :0 \
+  -auth /var/run/lightdm/root/:0 \
+  -rfbauth /etc/x11vnc.pass \
+  -forever \
+  -shared \
+  -loop \
+  -noxdamage \
+  -repeat \
+  -rfbport 5900
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=graphical.target
+```
+
+**Enable and start the service:**
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable x11vnc.service
+sudo systemctl start x11vnc.service
+sudo systemctl status x11vnc.service
+```
+
+---
+
+### 3C — TigerVNC Service (Camera Desktop — Port 5901)
+
+TigerVNC creates a separate virtual desktop (`:1`) dedicated to the camera dashboard.
+
+**Install TigerVNC:**
+
+```bash
+sudo apt install tigervnc-standalone-server tigervnc-common
+```
+
+**Create a VNC password:**
+
+```bash
+vncpasswd
+```
+
+**Create the desktop startup file:**
+
+```bash
+mkdir -p ~/.vnc
+nano ~/.vnc/xstartup
+```
+
+**Paste the following:**
+
+```bash
+#!/bin/sh
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+exec startxfce4
+```
+
+**Make it executable:**
+
+```bash
+chmod +x ~/.vnc/xstartup
+```
+
+**Create the TigerVNC systemd service:**
+
+```bash
+sudo nano /etc/systemd/system/tigervnc-camera.service
+```
+
+**Paste the following:**
+
+```ini
+[Unit]
+Description=TigerVNC camera desktop on display :1
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=YOUR_USERNAME
+PAMName=login
+ExecStartPre=-/usr/bin/vncserver -kill :1 > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver :1 \
+  -geometry 1920x1080 \
+  -depth 24 \
+  -rfbport 5901
+ExecStop=/usr/bin/vncserver -kill :1
+
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+> Replace `YOUR_USERNAME` with the actual Linux username running the camera system
+> (the user whose home directory contains `.vnc/`). Run `whoami` on the target to
+> confirm.
+>
+> **Note on PIDFile:** `PIDFile` is intentionally omitted. This is not a systemd
+> template unit, so the `%i` specifier would expand to an empty string and produce
+> an invalid path. TigerVNC manages its own PID file — systemd does not need to
+> track it separately with `Type=forking`.
+
+**Enable and start the service:**
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable tigervnc-camera.service
+sudo systemctl start tigervnc-camera.service
+sudo systemctl status tigervnc-camera.service
+```
+
+**Verify the port is listening:**
+
+```bash
+ss -tlnp | grep 5901
+```
+
+---
+
+## Phase 4 — Autostart Camera Dashboard on Boot
+
+The camera dashboard Python script needs to launch automatically when the camera
+desktop starts.
+
+**Create the autostart directory:**
+
+```bash
+mkdir -p ~/.config/autostart
+```
+
+**Create the autostart entry:**
+
+```bash
+nano ~/.config/autostart/camera-dashboard.desktop
+```
+
+**Paste the following:**
+
+```ini
+[Desktop Entry]
+Type=Application
+Name=Camera Dashboard
+Exec=/home/YOUR_USERNAME/Python/venv/bin/python /home/YOUR_USERNAME/Python/Cam_System/camera_dashboard.py
+Terminal=false
+Hidden=false
+X-GNOME-Autostart-enabled=true
+X-XFCE-Autostart-enabled=true
+```
+
+> Replace `YOUR_USERNAME` with your actual Linux username. Run `whoami` on the target
+> to confirm. Replace the Python and script paths with the actual locations on your
+> system. Run `which python` inside your virtual environment to confirm the Python path.
+>
+> **Important:** This autostart file must be in the home directory of the user specified
+> under `User=` in `tigervnc-camera.service`. If the TigerVNC service runs as a
+> different user than the one you are currently logged in as, create this file under
+> that user's `~/.config/autostart/` directory instead. Run `echo $HOME` while logged
+> in as that user to confirm the correct path.
+
+**Verify the dashboard is running:**
+
+```bash
+ps aux | grep camera_dashboard
+```
+
+---
+
+## Phase 5 — Host Auto-Connect to Camera Desktop
+
+The host machine automatically connects to the camera desktop (port 5901) on startup
+using a user-level systemd service.
+
+**Install TigerVNC viewer on the host first:**
+
+```bash
+sudo apt install tigervnc-viewer
+```
+
+> Confirm the binary is present before creating the service: `which vncviewer`
+> The service will silently fail to start if the binary is missing.
+
+**Create the service directory if it doesn't exist:**
+
+```bash
+mkdir -p ~/.config/systemd/user
+```
+
+**Create the service file:**
+
+```bash
+nano ~/.config/systemd/user/cam-vncviewer.service
+```
+
+**Paste the following:**
+
+```ini
+[Unit]
+Description=Auto-start Camera VNC Viewer
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vncviewer 192.168.1.105:5901
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+```
+
+> Replace `192.168.1.105` with the actual static IP of your target machine.
+
+**Enable and start the service:**
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable cam-vncviewer.service
+systemctl --user start cam-vncviewer.service
+systemctl --user status cam-vncviewer.service
+```
+
+---
+
+## Phase 6 — File Transfer with SCP
+
+SCP (Secure Copy Protocol) transfers files between machines over SSH.
+
+### Basic Syntax
+
+```bash
+scp [options] SOURCE DESTINATION
+```
+
+Either the source or destination can be a remote machine.
+
+### Common Transfer Patterns
+
+**Download a file from target to host:**
+
+```bash
+scp USERNAME@192.168.1.105:/path/to/file.mp4 .
+```
+
+> The `.` means "place the file in the current directory."
+
+**Download a file to a specific location on the host:**
+
+```bash
+scp USERNAME@192.168.1.105:/path/to/file.mp4 /home/YOUR_USERNAME/Downloads/
+```
+
+**Upload a file from host to target:**
+
+```bash
+scp /home/YOUR_USERNAME/file.txt USERNAME@192.168.1.105:/home/YOUR_USERNAME/
+```
+
+**Copy an entire directory:**
+
+```bash
+scp -r USERNAME@192.168.1.105:/home/YOUR_USERNAME/Documents/Project .
+```
+
+### If You Don't Know the File Path
+
+Find the file on the target first:
+
+```bash
+find / -name "filename.mp4" 2>/dev/null
+```
+
+Then copy using the returned path:
+
+```bash
+scp USERNAME@192.168.1.105:/home/YOUR_USERNAME/path/to/filename.mp4 /home/YOUR_USERNAME/Downloads/
+```
+
+### Sending Files From the Target Back to the Host
+
+If you are already SSH'd into the target and want to push a file to the host:
+
+```bash
+scp /path/to/file.mp4 YOUR_HOST_USERNAME@192.168.1.101:/home/YOUR_HOST_USERNAME/Downloads/
+```
+
+---
+
+## Phase 7 — Router Access
+
+> **This section applies if your router runs OpenWrt firmware.** If you have a standard
+> ISP-provided router or different firmware (DD-WRT, Tomato, etc.), access your admin
+> panel via a browser at your gateway IP. Find it with:
+> ```bash
+> ip route | grep default
+> ```
+> The address shown after `via` is your gateway — open it in a browser.
+
+### OpenWrt Access Methods
+
+| Method | Command / URL |
+|---|---|
+| Web UI (LuCI) | `http://192.168.1.1` |
+| SSH (standard) | `ssh root@192.168.1.1` |
+| SSH (older firmware) | `ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa root@192.168.1.1` |
+
+> Default user: `root`
+
+---
+
+## System Verification
+
+Run these checks after setup or after a reboot to confirm everything is working.
+
+**On the target:**
+
+```bash
+systemctl status x11vnc.service           # Maintenance VNC running?
+systemctl status tigervnc-camera.service  # Camera VNC running?
+ss -tlnp | grep -E "5900|5901"            # Both ports listening?
+ps aux | grep camera_dashboard            # Dashboard process running?
+```
+
+**On the host:**
+
+```bash
+systemctl --user status cam-vncviewer.service    # Auto-connect running?
+```
+
+### Expected Results
+
+| Check | Expected State |
+|---|---|
+| Port 5900 | Maintenance desktop available |
+| Port 5901 | Camera desktop available |
+| Camera Dashboard | Running automatically after boot |
+| Host VNC viewer | Connected automatically to port 5901 |
+
+---
+
+## Manual Maintenance Access
+
+The maintenance desktop is always available regardless of the camera system state.
+
+**Connect manually from the host:**
+
+```bash
+vncviewer 192.168.1.105:5900
+```
+
+---
+
+## Quick Reference
+
+```bash
+# SSH into target
+ssh USERNAME@192.168.1.105
+
+# Manual VNC — maintenance desktop
+vncviewer 192.168.1.105:5900
+
+# Manual VNC — camera desktop
+vncviewer 192.168.1.105:5901
+
+# Check all services
+systemctl status x11vnc.service
+systemctl status tigervnc-camera.service
+systemctl --user status cam-vncviewer.service
+
+# Transfer a file from target to host
+scp USERNAME@192.168.1.105:/path/to/file .
+
+# Find a file on the target
+find / -name "filename" 2>/dev/null
+```
